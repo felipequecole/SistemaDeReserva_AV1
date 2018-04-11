@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/SistemaDeReserva_AV1">
+    <ResourceLink global="jdbc/SistemaReservaDB" name="jdbc/SistemaReservaDBLocal" type="javax.sql.DataSource"/>
+</Context>
