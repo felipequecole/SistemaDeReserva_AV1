@@ -14,11 +14,16 @@
     </head>
     <body>
         <h1>Sistema de reserva</h1>
-        <a href="#">Cadastrar site</a>
-        <a href="#">Cadastrar hotel</a>
-        <a href="#">Listar hotéis</a>
-        <a href="#">Listar hotéis por cidade</a>
-        <a href="#">Criar promoção</a>
-        <a href="#">Listar promoções por hotel</a>
+    <c:if test="${sessionScope.user != ''}">
+        <h2>Bem-vindo, ${sessionScope.user}. (${sessionScope.role}))</h2>
+    </c:if>
+        <ul>
+            <li><a href="cadastraSite.jsp">Cadastrar site</a></li>
+            <li><a href="#">Cadastrar hotel</a></li>
+            <li><a href="#">Listar hotéis</a></li>
+            <li><a href="#">Listar hotéis por cidade</a></li>
+            <li><a href="#">Criar promoção</a></li>
+            <li><a href="#">Listar promoções por hotel</a></li>
+        </ul>
     </body>
 </html>
