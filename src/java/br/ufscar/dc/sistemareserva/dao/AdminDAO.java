@@ -5,7 +5,7 @@
  */
 package br.ufscar.dc.sistemareserva.dao;
 
-import br.ufscar.dc.sistemareserva.beans.Site;
+import br.ufscar.dc.sistemareserva.beans.Admin;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,40 +18,37 @@ import javax.sql.DataSource;
  *
  * @author felipequecole
  */
-public class SiteDAO {
+public class AdminDAO {
 
-    // fazer strings sql
-    private final static String BUSCAR_SITE_SQL = "select "
-            + "senha, telefone, nome, url "
-            + "from site "
+    private final static String BUSCAR_ADMIN_SQL = "select "
+            + "nome, email, senha "
+            + "from admin "
             + "where nome=?";
 
     DataSource datasource;
 
-    public SiteDAO(DataSource datasource) {
+    public AdminDAO(DataSource datasource) {
         this.datasource = datasource;
     }
 
-    public Site buscarSite(String email) {
-        Site site = new Site();
+    public Admin buscaAdmin(String username) {
+        Admin admin = new Admin();
         try {
             Connection con = datasource.getConnection();
-            PreparedStatement ps = con.prepareStatement(BUSCAR_SITE_SQL);
-            ps.setString(1, email);
+            PreparedStatement ps = con.prepareStatement(BUSCAR_ADMIN_SQL);
+            ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                site.setNome(rs.getString("nome"));
-                site.setSenha(rs.getString("senha"));
-                site.setTelefone(rs.getString("telefone"));
-                site.setUrl(rs.getString("url"));
+                admin.setEmail(rs.getString("email"));
+                admin.setSenha(rs.getString("senha"));
+                admin.setNome(rs.getString("nome"));
             } else {
                 return null;
             }
         } catch (SQLException ex) {
             Logger.getLogger(SiteDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return null; 
+            return null;
         }
-        return site;
+        return admin; 
     }
-
 }

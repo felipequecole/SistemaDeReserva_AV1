@@ -4,7 +4,7 @@
     Author     : felipequecole
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,10 +13,9 @@
         <title>Sistema de Reservas</title>
     </head>
     <body>
+        <jsp:include page="navbar.jsp" />
+        <br/>
         <h1>Sistema de reserva</h1>
-    <c:if test="${sessionScope.user != ''}">
-        <h2>Bem-vindo, ${sessionScope.user}. (${sessionScope.role}))</h2>
-    </c:if>
         <ul>
             <li><a href="cadastraSite.jsp">Cadastrar site</a></li>
             <li><a href="#">Cadastrar hotel</a></li>

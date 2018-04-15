@@ -9,16 +9,8 @@ package br.ufscar.dc.sistemareserva.beans;
  *
  * @author felipequecole
  */
-public class Site {
-    private String url, nome, senha, telefone;
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
+public class Admin {
+    String email, senha, nome; 
 
     public String getNome() {
         return nome;
@@ -28,6 +20,13 @@ public class Site {
         this.nome = nome;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getSenha() {
         return senha;
@@ -35,14 +34,6 @@ public class Site {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
     }
     
     
