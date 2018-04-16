@@ -39,14 +39,10 @@ public class loginServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("entrou");
         request.setCharacterEncoding("UTF-8");
         String username = request.getParameter("username");
         String senha = request.getParameter("senha");
         String tipo = request.getParameter("tipo");
-        System.out.println(username);
-        System.out.println(senha);
-        System.out.println(tipo);
         if (tipo.equals("site")) {
             SiteDAO sdao = new SiteDAO(datasource);
             Site site = sdao.buscarSite(username);
@@ -56,7 +52,6 @@ public class loginServlet extends HttpServlet {
                 response.sendRedirect("login.jsp");
             }
             else if (site.getSenha().equals(senha)) {
-                System.out.println("oi");
                 request.getSession().setAttribute("user", site.getNome());
                 request.getSession().setAttribute("role", "site");
                 response.sendRedirect("index.jsp");
@@ -77,7 +72,7 @@ public class loginServlet extends HttpServlet {
                 request.getSession().setAttribute("role", "admin");
                 response.sendRedirect("index.jsp");
             } else { 
-                request.getSession().setAttribute("login_mensagem", "Login (senha) Inválido!");
+                request.getSession().setAttribute("login_mensagem", "Login Inválido!");
                 response.sendRedirect("login.jsp");
             }
         }

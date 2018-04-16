@@ -3,16 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/felipequecole/NetBeansProjects/SistemaDeReserva_AV1/web/META-INF/context.xml</file>
             <file>file:/home/felipequecole/NetBeansProjects/SistemaDeReserva_AV1/src/java/br/ufscar/dc/sistemareserva/dao/SiteDAO.java</file>
-            <file>file:/home/felipequecole/NetBeansProjects/SistemaDeReserva_AV1/src/java/br/ufscar/dc/sistemareserva/forms/loginFormBean.java</file>
             <file>file:/home/felipequecole/NetBeansProjects/SistemaDeReserva_AV1/web/login.jsp</file>
             <file>file:/home/felipequecole/NetBeansProjects/SistemaDeReserva_AV1/web/index.jsp</file>
-            <file>file:/home/felipequecole/NetBeansProjects/SistemaDeReserva_AV1/src/java/br/ufscar/dc/sistemareserva/beans/Site.java</file>
             <file>file:/home/felipequecole/NetBeansProjects/SistemaDeReserva_AV1/src/java/br/ufscar/dc/sistemareserva/servlet/loginServlet.java</file>
-            <file>file:/home/felipequecole/NetBeansProjects/SistemaDeReserva_AV1/web/cadastraSite.jsp</file>
-            <file>file:/home/felipequecole/NetBeansProjects/SistemaDeReserva_AV1/src/conf/MANIFEST.MF</file>
-            <file>file:/home/felipequecole/NetBeansProjects/SistemaDeReserva_AV1/web/estilo.css</file>
+            <file>file:/home/felipequecole/NetBeansProjects/SistemaDeReserva_AV1/src/java/br/ufscar/dc/sistemareserva/beans/Admin.java</file>
+            <file>file:/home/felipequecole/NetBeansProjects/SistemaDeReserva_AV1/src/java/br/ufscar/dc/sistemareserva/dao/AdminDAO.java</file>
         </group>
     </open-files>
 </project-private>
