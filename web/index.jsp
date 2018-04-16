@@ -18,7 +18,7 @@
         <h1>Sistema de reserva</h1>
         <ul>
             <li><a href="cadastraSite.jsp">Cadastrar site</a></li>
-            <li><a href="#">Cadastrar hotel</a></li>
+            <li><a href="hotelForm.jsp">Cadastrar hotel</a></li>
             <li><a href="#">Listar hotéis</a></li>
             <li><a href="#">Listar hotéis por cidade</a></li>
             <li><a href="#">Criar promoção</a></li>

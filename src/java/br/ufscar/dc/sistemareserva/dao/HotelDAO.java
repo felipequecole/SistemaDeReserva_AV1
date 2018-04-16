@@ -30,7 +30,7 @@ public class HotelDAO {
     private final static String BUSCAR_HOTEL_SQL = "select "
             + "cnpj, nome, cidade, senha "
             + "from hotel "
-            + "where url=?";
+            + "where cnpj=?";
 
     DataSource datasource;
     
@@ -40,7 +40,7 @@ public class HotelDAO {
     
     public Hotel gravaHotel(Hotel hotel) throws SQLException, NamingException{
         try (Connection con = datasource.getConnection();
-            PreparedStatement ps = con.prepareStatement(CRIAR_HOTEL_SQL, Statement.RETURN_GENERATED_KEYS);) {
+            PreparedStatement ps = con.prepareStatement(CRIAR_HOTEL_SQL);) {
             ps.setString(1, hotel.getCnpj());
             ps.setString(2, hotel.getNome());
             ps.setString(3, hotel.getCidade());
@@ -59,7 +59,7 @@ public class HotelDAO {
             ps.setString(1, cnpj);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                hotel.setCnpj("cnpj");
+                hotel.setCnpj(rs.getString("cnpj"));
                 hotel.setNome(rs.getString("nome"));
                 hotel.setSenha(rs.getString("senha"));
                 hotel.setCidade(rs.getString("cidade"));
