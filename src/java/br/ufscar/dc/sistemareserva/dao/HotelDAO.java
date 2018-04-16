@@ -5,10 +5,73 @@
  */
 package br.ufscar.dc.sistemareserva.dao;
 
+import br.ufscar.dc.sistemareserva.beans.Hotel;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 /**
  *
  * @author felipequecole
  */
 public class HotelDAO {
+    // fazer strings sql
+    
+    private final static String CRIAR_HOTEL_SQL = "insert into hotel"
+            + " (cnpj, nome, cidade, senha)"
+            + " values (?,?,?,?)";
+    
+    private final static String BUSCAR_HOTEL_SQL = "select "
+            + "cnpj, nome, cidade, senha "
+            + "from hotel "
+            + "where url=?";
+
+    DataSource datasource;
+    
+    public HotelDAO(DataSource datasource){
+        this.datasource = datasource;
+    }
+    
+    public Hotel gravaHotel(Hotel hotel) throws SQLException, NamingException{
+        try (Connection con = datasource.getConnection();
+            PreparedStatement ps = con.prepareStatement(CRIAR_HOTEL_SQL, Statement.RETURN_GENERATED_KEYS);) {
+            ps.setString(1, hotel.getCnpj());
+            ps.setString(2, hotel.getNome());
+            ps.setString(3, hotel.getCidade());
+            ps.setString(4, hotel.getSenha());
+            ps.execute();
+        }
+        return hotel;
+    }
+    
+    public Hotel buscaHotel(String cnpj){
+        Hotel hotel = new Hotel();
+        
+        try {
+            java.sql.Connection con = datasource.getConnection();
+            PreparedStatement ps = con.prepareStatement(BUSCAR_HOTEL_SQL);
+            ps.setString(1, cnpj);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                hotel.setCnpj("cnpj");
+                hotel.setNome(rs.getString("nome"));
+                hotel.setSenha(rs.getString("senha"));
+                hotel.setCidade(rs.getString("cidade"));
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(HotelDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null; 
+        }
+        
+        return hotel;
+    }
     
 }
