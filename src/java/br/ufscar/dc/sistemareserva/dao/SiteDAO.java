@@ -24,7 +24,7 @@ public class SiteDAO {
     private final static String BUSCAR_SITE_SQL = "select "
             + "senha, telefone, nome, url "
             + "from site "
-            + "where nome=?";
+            + "where url=?";
 
     DataSource datasource;
 
@@ -32,12 +32,12 @@ public class SiteDAO {
         this.datasource = datasource;
     }
 
-    public Site buscarSite(String email) {
+    public Site buscarSite(String url) {
         Site site = new Site();
         try {
             Connection con = datasource.getConnection();
             PreparedStatement ps = con.prepareStatement(BUSCAR_SITE_SQL);
-            ps.setString(1, email);
+            ps.setString(1, url);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 site.setNome(rs.getString("nome"));
