@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -32,6 +34,10 @@ public class SiteDAO {
             + "senha, telefone, nome, url "
             + "from site "
             + "where url=?";
+    
+    private final static String LISTAR_TODOS_SITES = "select "
+            + "nome,url"
+            + "from site ";
 
     DataSource datasource;
 
@@ -75,5 +81,24 @@ public class SiteDAO {
         }
         return site;
     }
-
+    
+    public List<Site> listarTodosSites(){
+        ArrayList<Site> s = new ArrayList();
+        try {
+            Connection con = datasource.getConnection();
+            PreparedStatement ps = con.prepareStatement(LISTAR_TODOS_SITES);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Site aux = new Site();
+                aux.setNome(rs.getString("nome"));
+                aux.setUrl(rs.getString("url"));
+                s.add(aux);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SiteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null; 
+        }
+        return s;
+        
+    }
 }
