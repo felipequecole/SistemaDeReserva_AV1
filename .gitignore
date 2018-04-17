@@ -1,4 +1,5 @@
 */generated-sources/*
 /dist/
 build/*
+nbproject/private/*
 nbprojects/private/*

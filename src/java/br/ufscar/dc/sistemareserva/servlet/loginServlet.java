@@ -6,8 +6,10 @@
 package br.ufscar.dc.sistemareserva.servlet;
 
 import br.ufscar.dc.sistemareserva.beans.Admin;
+import br.ufscar.dc.sistemareserva.beans.Hotel;
 import br.ufscar.dc.sistemareserva.beans.Site;
 import br.ufscar.dc.sistemareserva.dao.AdminDAO;
+import br.ufscar.dc.sistemareserva.dao.HotelDAO;
 import br.ufscar.dc.sistemareserva.dao.SiteDAO;
 import java.io.IOException;
 import javax.annotation.Resource;
@@ -72,6 +74,21 @@ public class loginServlet extends HttpServlet {
                 request.getSession().setAttribute("role", "admin");
                 response.sendRedirect("index.jsp");
             } else { 
+                request.getSession().setAttribute("login_mensagem", "Login Inválido!");
+                response.sendRedirect("login.jsp");
+            }
+        } else if (tipo.equals("hotel")){
+            HotelDAO hdao = new HotelDAO(datasource);
+            Hotel hotel = hdao.buscaHotel(username);
+            if (hotel == null) {
+                request.getSession().setAttribute("login_mensagem", "Login Inválido!");
+                response.sendRedirect("login.jsp");
+            } else if (hotel.getSenha().equals(senha)){
+                request.getSession().setAttribute("user", hotel.getNome());
+                request.getSession().setAttribute("role", "hotel");
+                request.getSession().setAttribute("cnpj", hotel.getCnpj());
+                response.sendRedirect("index.jsp");
+            } else {
                 request.getSession().setAttribute("login_mensagem", "Login Inválido!");
                 response.sendRedirect("login.jsp");
             }

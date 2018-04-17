@@ -5,17 +5,16 @@
  */
 package br.ufscar.dc.sistemareserva.servlet;
 
-import br.ufscar.dc.sistemareserva.beans.Site;
-import br.ufscar.dc.sistemareserva.dao.SiteDAO;
-import br.ufscar.dc.sistemareserva.forms.CadastraSiteFormBean;
+import br.ufscar.dc.sistemareserva.beans.Promocao;
+import br.ufscar.dc.sistemareserva.dao.PromocaoDAO;
+import br.ufscar.dc.sistemareserva.forms.CadastraPromocaoFormBean;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,16 +22,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import org.apache.commons.beanutils.BeanUtils;
-import java.util.List;
 
 /**
  *
- * @author eduardo
+ * @author felipequecole
  */
-@WebServlet(name = "cadastraSiteServlet", urlPatterns = {"/cadastraSiteServlet"})
-public class cadastraSiteServlet extends HttpServlet {
-    @Resource(name = "jdbc/SistemaReservaDBLocal")
-    DataSource datasource;
+@WebServlet(name = "cadastraPromocaoServlet", urlPatterns = {"/cadastraPromocaoServlet"})
+public class cadastraPromocaoServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,32 +39,48 @@ public class cadastraSiteServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    @Resource(name = "jdbc/SistemaReservaDBLocal")
+    DataSource datasource;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException, NamingException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        CadastraSiteFormBean csfb = new CadastraSiteFormBean();
-        SiteDAO sdao = new SiteDAO(datasource);
+        CadastraPromocaoFormBean cpfb = new CadastraPromocaoFormBean();
         try {
-            BeanUtils.populate(csfb, request.getParameterMap());
-            List<String> mensagens = csfb.validar();
-            if (mensagens != null){
-                request.setAttribute("mensagens", mensagens);
-                request.getSession().setAttribute("form",csfb);
-                request.getRequestDispatcher("cadastraSite.jsp").forward(request,response);
+            BeanUtils.populate(cpfb, request.getParameterMap());
+            Promocao promocao = new Promocao();
+            promocao.setCnpj((String) request.getSession().getAttribute("cnpj"));
+            System.out.println(promocao.getCnpj());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                promocao.setData_inicio(sdf.parse(cpfb.getData_inicio()));
+                promocao.setData_fim(sdf.parse(cpfb.getData_fim()));
+                promocao.setPreco(cpfb.getPreco());
+                promocao.setUrl(cpfb.getUrl());
+                PromocaoDAO pdao = new PromocaoDAO(datasource);
+                Promocao promocao_ret = pdao.gravaPromocao(promocao);
+                if (promocao_ret != null) {
+                    request.getSession().setAttribute("mensagem", "Promoção cadastrada com sucesso!");
+                    response.sendRedirect("index.jsp");
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(cadastraPromocaoServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.getSession().setAttribute("mensagem", ex.getLocalizedMessage());
+                request.getRequestDispatcher("erro.jsp").forward(request, response);
             }
-            Site site = new Site();
-            site.setNome(csfb.getNome());
-            site.setUrl(csfb.getUrl());
-            site.setTelefone(csfb.getTelefone());
-            site.setSenha(csfb.getSenha());
-            site = sdao.gravarSite(site);
-            request.getSession().setAttribute("mensagem","Site cadastrado.");
-            response.sendRedirect("index.jsp");
+           
+            
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(cadastraPromocaoServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getSession().setAttribute("mensagem", ex.getLocalizedMessage());
+            request.getRequestDispatcher("erro.jsp").forward(request, response);
         } catch (InvocationTargetException ex) {
-            Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(cadastraPromocaoServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getSession().setAttribute("mensagem", ex.getLocalizedMessage());
+            request.getRequestDispatcher("erro.jsp").forward(request, response);
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -83,15 +95,7 @@ public class cadastraSiteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
-            // tratar erro
-        } catch (NamingException ex) {
-            Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
-            // tratar erro
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -105,13 +109,7 @@ public class cadastraSiteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NamingException ex) {
-            Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
