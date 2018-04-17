@@ -54,8 +54,15 @@ public class CadastraHotelServlet extends HttpServlet {
             List<String> mensagens = chfb.validar();
             
             if(mensagens != null){
+             request.getSession().setAttribute("mensagens", mensagens);
+             request.setAttribute("mensagens", mensagens);
+             for (String msg : mensagens) {
+                 System.out.println(msg);
+             }
+             request.getSession().setAttribute("novoHotel", chfb);
              request.getRequestDispatcher("hotelForm.jsp").forward(request, response);
             }else{
+                
                 Hotel hotel = new Hotel();
 
                 hotel.setNome(chfb.getNome());
@@ -65,7 +72,7 @@ public class CadastraHotelServlet extends HttpServlet {
 
                 hotel = hoteldao.gravaHotel(hotel);
 
-                request.setAttribute("mensagem", "Hotel cadastrado com sucesso!");
+                request.getSession().setAttribute("mensagem", "Hotel cadastrado com sucesso!");
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
             
