@@ -10,6 +10,7 @@ import br.ufscar.dc.sistemareserva.dao.PromocaoDAO;
 import br.ufscar.dc.sistemareserva.forms.CadastraPromocaoFormBean;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
@@ -59,10 +60,20 @@ public class cadastraPromocaoServlet extends HttpServlet {
                 promocao.setPreco(cpfb.getPreco());
                 promocao.setUrl(cpfb.getUrl());
                 PromocaoDAO pdao = new PromocaoDAO(datasource);
-                Promocao promocao_ret = pdao.gravaPromocao(promocao);
+                Promocao promocao_ret = null;
+                try {
+                    promocao_ret = pdao.gravaPromocao(promocao);
+                } catch (SQLException ex) {
+                    Logger.getLogger(cadastraPromocaoServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    request.setAttribute("mensagem", ex.getLocalizedMessage());
+                    request.getRequestDispatcher("erro.jsp").forward(request, response);
+                }
                 if (promocao_ret != null) {
-                    request.getSession().setAttribute("mensagem", "Promoção cadastrada com sucesso!");
+                    request.setAttribute("mensagem", "Promoção cadastrada com sucesso!");
                     response.sendRedirect("index.jsp");
+                } else {
+                    request.setAttribute("mensagem", "Erro ao salvar no banco");
+                    request.getRequestDispatcher("erro.jsp").forward(request, response);
                 }
             } catch (ParseException ex) {
                 Logger.getLogger(cadastraPromocaoServlet.class.getName()).log(Level.SEVERE, null, ex);
