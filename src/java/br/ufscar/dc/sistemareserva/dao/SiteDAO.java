@@ -10,8 +10,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 /**
@@ -21,6 +23,11 @@ import javax.sql.DataSource;
 public class SiteDAO {
 
     // fazer strings sql
+    
+    private final static String CRIAR_SITE_SQL = "insert into Site" 
+            + "(url,nome,telefone,senha)"
+            + "values (?,?,?,?)";
+    
     private final static String BUSCAR_SITE_SQL = "select "
             + "senha, telefone, nome, url "
             + "from site "
@@ -31,6 +38,21 @@ public class SiteDAO {
     public SiteDAO(DataSource datasource) {
         this.datasource = datasource;
     }
+    
+    public Site gravarSite (Site s) throws SQLException, NamingException {
+        try (Connection con = datasource.getConnection();
+                PreparedStatement ps = con.prepareStatement(CRIAR_SITE_SQL);){
+        ps.setString(1, s.getUrl());
+        ps.setString(2, s.getNome());
+        ps.setString(3, s.getTelefone());
+        ps.setString(4, s.getSenha());
+        ps.execute();
+        }
+     return s;
+     }
+    
+    
+    
 
     public Site buscarSite(String url) {
         Site site = new Site();

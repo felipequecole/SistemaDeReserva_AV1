@@ -14,6 +14,15 @@
     </head>
     <body>
         <jsp:include page="navbar.jsp" />
+        <% if (session.getAttribute("mensagem") != null) { %>
+        <div class="errorMessage">
+            <ul class="erro">
+                <c:forEach items="${requestScope.mensagens}" var="mensagem">
+                    <li>${mensagem}</li>
+                </c:forEach>
+            </ul>
+        </div>
+        <% }%>
         <br/>
         <h1>Sistema de reserva</h1>
         <ul>
@@ -21,8 +30,9 @@
             <li><a href="hotelForm.jsp">Cadastrar hotel</a></li>
             <li><a href="#">Listar hotéis</a></li>
             <li><a href="#">Listar hotéis por cidade</a></li>
-            <li><a href="#">Criar promoção</a></li>
+            <li><a href="cadastraPromocao.jsp">Criar promoção</a></li>
             <li><a href="#">Listar promoções por hotel</a></li>
         </ul>
     </body>
+    <% session.removeAttribute("mensagem");%>
 </html>
