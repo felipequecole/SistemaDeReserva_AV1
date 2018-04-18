@@ -62,7 +62,7 @@ public class ListaHotelServlet extends HttpServlet {
         } else {
 
             try {
-                todosOsHoteis = hotelDAO.listaTodosHoteisCidade(cidade);
+                todosOsHoteis = hotelDAO.listaTodosHoteisCidade(cidade.toUpperCase());
             } catch (SQLException ex) {
                 Logger.getLogger(ListaHotelServlet.class.getName()).log(Level.SEVERE, null, ex);
             } catch (NamingException ex) {
