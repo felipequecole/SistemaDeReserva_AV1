@@ -56,6 +56,7 @@ public class loginServlet extends HttpServlet {
             else if (site.getSenha().equals(senha)) {
                 request.getSession().setAttribute("user", site.getNome());
                 request.getSession().setAttribute("role", "site");
+                request.getSession().setAttribute("url", site.getUrl());
                 response.sendRedirect("index.jsp");
 //                request.getRequestDispatcher("index.jsp").forward(request, response);
             } else {

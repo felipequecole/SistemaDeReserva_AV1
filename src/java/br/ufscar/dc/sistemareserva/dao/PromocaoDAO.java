@@ -11,8 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 import javax.sql.DataSource;
 
 /**
@@ -24,6 +24,16 @@ public class PromocaoDAO {
     private final static String CRIAR_PROMOCAO_SQL = "insert into promocao "
             + "(url, cnpj, data_inicio, data_fim, preco) values "
             + "(?,?,?,?,?)";
+    
+    private final static String BUSCA_PROMOCAO_POR_HOTEL_SQL = "select "
+            + "url, cnpj, data_inicio, data_fim, preco, id "
+            + "from promocao "
+            + "where cnpj=?";
+    
+    private final static String BUSCA_PROMOCAO_POR_SITE_SQL = "select "
+            + "url, cnpj, data_inicio, data_fim, preco, id "
+            + "from promocao "
+            + "where url=?";
 
     DataSource datasource;
 
@@ -47,4 +57,44 @@ public class PromocaoDAO {
             }
             return promocao;
         }
-    }
+    
+     public List<Promocao> listaPromocaoHotel(String cnpj) throws SQLException{
+         ArrayList<Promocao> ret = new ArrayList();
+         Connection con = datasource.getConnection();
+         PreparedStatement ps = con.prepareStatement(BUSCA_PROMOCAO_POR_HOTEL_SQL);
+         ps.setString(1, cnpj);
+         ResultSet rs = ps.executeQuery();
+         while (rs.next()) {
+             Promocao promo = new Promocao();
+             promo.setCnpj(rs.getString("cnpj"));
+             promo.setData_fim(rs.getDate("data_fim"));
+             promo.setData_inicio(rs.getDate("data_fim"));
+             promo.setUrl(rs.getString("url"));
+             promo.setId(rs.getInt("id"));
+             ret.add(promo);
+         }
+         
+         return (ret.isEmpty() ? null : ret); 
+       }
+     
+     public List<Promocao> listaPromocaoSite(String url) throws SQLException{
+         ArrayList<Promocao> ret = new ArrayList();
+         Connection con = datasource.getConnection();
+         PreparedStatement ps = con.prepareStatement(BUSCA_PROMOCAO_POR_SITE_SQL);
+         ps.setString(1, url);
+         ResultSet rs = ps.executeQuery();
+         while(rs.next()){
+             Promocao promo = new Promocao();
+             promo.setUrl(rs.getString("url"));
+             promo.setCnpj(rs.getString("cnpj"));
+             promo.setData_fim(rs.getDate("data_fim"));
+             promo.setData_inicio(rs.getDate("data_inicio"));
+             promo.setId(rs.getInt("id"));
+             ret.add(promo);
+         }
+         
+         return (ret.isEmpty() ? null : ret);
+     } 
+ }
+
+   
