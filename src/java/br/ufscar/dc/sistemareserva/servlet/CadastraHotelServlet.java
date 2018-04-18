@@ -85,7 +85,7 @@ public class CadastraHotelServlet extends HttpServlet {
             
         } catch (SQLException ex) {
             Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
-            request.setAttribute("mensagem", "Erro ao acessar o banco.");
+            request.setAttribute("mensagem", ex.getLocalizedMessage());
             request.getRequestDispatcher("erro.jsp").forward(request, response);
         }
         

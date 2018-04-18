@@ -5,8 +5,13 @@
  */
 package br.ufscar.dc.sistemareserva.forms;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -67,6 +72,27 @@ public class CadastraPromocaoFormBean {
         mensagens.add("O preço não pode ser menor que zero !");       
     }
     
+    Date inicio = new Date();
+    Date fim =  new Date();
+    
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    
+        try {
+            inicio = sdf.parse(data_inicio);
+        } catch (ParseException ex) {
+            Logger.getLogger(CadastraPromocaoFormBean.class.getName()).log(Level.SEVERE, null, ex);
+            mensagens.add("Data de inicio não é valida!");      
+        }
+        try {
+            fim = sdf.parse(data_fim);
+        } catch (ParseException ex) {
+            Logger.getLogger(CadastraPromocaoFormBean.class.getName()).log(Level.SEVERE, null, ex);
+            mensagens.add("Data de fim não é valida!");     
+        }
+    
+        if (fim.getTime() - inicio.getTime() <= 0){
+            mensagens.add("Intervalo de datas não é válido.");
+        }
     return mensagens;
     }
     
