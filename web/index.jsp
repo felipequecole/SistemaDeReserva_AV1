@@ -24,14 +24,21 @@
         </div>
         <% }%>
         <br/>
-        <h1>Sistema de reserva</h1>
+        <h1>Sistema de reserva</h1> <br/>
+        <form action="ListaHotelServlet" method="GET">
+            <div>            
+                <input type="text" name="cidade" placeholder="Buscar por cidade..."/>
+                <button type="submit">Buscar</button>            
+            </div>
+        </form>
         <ul>
             <li><a href="cadastraSite.jsp">Cadastrar site</a></li>
             <li><a href="hotelForm.jsp">Cadastrar hotel</a></li>
             <li><a href="#">Listar hotéis</a></li>
             <li><a href="#">Listar hotéis por cidade</a></li>
             <li><a href="cadastraPromocao.jsp">Criar promoção</a></li>
-            <li><a href="#">Listar promoções por hotel</a></li>
+            <li><a href="VerPromocoesServlet">Listar promoções por hotel</a></li>
+            <li><a href="VerPromocoesServlet">Listar promoções por site</a></li>
         </ul>
     </body>
     <% session.removeAttribute("mensagem");%>
