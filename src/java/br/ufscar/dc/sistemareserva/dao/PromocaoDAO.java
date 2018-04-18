@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
 
@@ -34,7 +35,14 @@ public class PromocaoDAO {
             + "url, cnpj, data_inicio, data_fim, preco, id "
             + "from promocao "
             + "where url=?";
-
+    
+    private final static String VALIDA_SQL = "select"
+            +"url"
+            +"from promocao"
+            +"where url = ? and cnpj = ? and data_inicio = ?";
+            
+    
+    
     DataSource datasource;
 
     public PromocaoDAO(DataSource datasource) {
@@ -57,6 +65,30 @@ public class PromocaoDAO {
             }
             return promocao;
         }
+    
+    public Boolean validaPromocao(String cnpj, String url, String data_inicio){
+        
+         try (Connection con = datasource.getConnection();
+                PreparedStatement ps = con.prepareStatement(VALIDA_SQL, Statement.RETURN_GENERATED_KEYS);) {
+            
+            ps.setString(1, url);
+            ps.setString(2, cnpj);
+            ps.setString(3, data_inicio);
+            ps.execute();
+            
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if(rs.next()){
+                    return false;
+                }
+            }catch(SQLException e){
+                
+            }
+        }catch(SQLException e){
+        
+        }
+    
+        return true;
+    }
     
      public List<Promocao> listaPromocaoHotel(String cnpj) throws SQLException{
          ArrayList<Promocao> ret = new ArrayList();
