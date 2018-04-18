@@ -99,7 +99,7 @@ public class CadastraPromocaoFormBean {
         if (fim.getTime() - inicio.getTime() <= 0){
             mensagens.add("Intervalo de datas não é válido.");
         }
-    return mensagens;
+    return (mensagens.isEmpty() ? null : mensagens);
     }
     
     
