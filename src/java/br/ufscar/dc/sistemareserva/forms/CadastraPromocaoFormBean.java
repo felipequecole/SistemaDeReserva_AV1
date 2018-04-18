@@ -5,6 +5,9 @@
  */
 package br.ufscar.dc.sistemareserva.forms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author felipequecole
@@ -43,6 +46,28 @@ public class CadastraPromocaoFormBean {
 
     public void setPreco(float preco) {
         this.preco = preco;
+    }
+    
+    public List<String> validar(){
+    List<String> mensagens = new ArrayList<String>();
+    
+    if(url.trim().length() == 0){
+        mensagens.add("O endereço não pode ser vazio!");
+    }
+    
+    if (data_inicio.trim().length() == 0){
+        mensagens.add("A data de inicio não pode ser vazia!");    
+    }
+    
+    if (data_fim.trim().length() == 0){
+        mensagens.add("A data de fim não pode ser vazia!");    
+    }
+    
+    if (preco < 0){
+        mensagens.add("O preço não pode ser menor que zero !");       
+    }
+    
+    return mensagens;
     }
     
     

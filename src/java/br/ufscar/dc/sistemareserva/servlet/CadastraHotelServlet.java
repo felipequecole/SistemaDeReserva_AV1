@@ -10,8 +10,13 @@ import br.ufscar.dc.sistemareserva.dao.HotelDAO;
 import br.ufscar.dc.sistemareserva.forms.CadastraHotelFormBean;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,7 +46,7 @@ public class CadastraHotelServlet extends HttpServlet {
     
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, NamingException, IllegalAccessException, InvocationTargetException {
         response.setContentType("text/html;charset=UTF-8");
         
         CadastraHotelFormBean chfb = new CadastraHotelFormBean();
@@ -68,7 +73,7 @@ public class CadastraHotelServlet extends HttpServlet {
                 hotel.setNome(chfb.getNome());
                 hotel.setCnpj(chfb.getCnpj());
                 hotel.setSenha(chfb.getSenha());
-                hotel.setCidade(chfb.getCidade());
+                hotel.setCidade(chfb.getCidade().toUpperCase());
 
                 hotel = hoteldao.gravaHotel(hotel);
 
@@ -78,9 +83,9 @@ public class CadastraHotelServlet extends HttpServlet {
             
             
             
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("mensagem", e.getLocalizedMessage());
+        } catch (SQLException ex) {
+            Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("mensagem", "Erro ao acessar o banco.");
             request.getRequestDispatcher("erro.jsp").forward(request, response);
         }
         
@@ -98,7 +103,15 @@ public class CadastraHotelServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NamingException ex) {
+            Logger.getLogger(CadastraHotelServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(CadastraHotelServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(CadastraHotelServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -112,7 +125,15 @@ public class CadastraHotelServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NamingException ex) {
+            Logger.getLogger(CadastraHotelServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(CadastraHotelServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(CadastraHotelServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

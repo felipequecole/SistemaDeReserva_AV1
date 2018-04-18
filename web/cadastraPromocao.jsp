@@ -24,15 +24,24 @@
         <form action="cadastraPromocaoServlet" method="post">
             <!--Mudar para o login ser de hotel e a lista ser de sites-->
             <label for="url">Site:</label>
-            <input type="text" name="url"/> <br/>
+            <input type="text" name="url" value="${sessionScope.form.url}"/> <br/>
             <label for="data_inicio">Data de início: </label>
-            <input type="text" name="data_inicio" placeholder="dd/mm/yyyy"/> <br/>
+            <input type="text" name="data_inicio" placeholder="dd/mm/yyyy" value="${sessionScope.form.data_inicio}"/> <br/>
             <label for="data_fim">Data de fim: </label>
-            <input type="text" name="data_fim" placeholder="dd/mm/yyyy"/> <br/>
+            <input type="text" name="data_fim" placeholder="dd/mm/yyyy" value="${sessionScope.form.data_fim}"/> <br/>
             <label for="preco">Preço:</label>
-            <input type="number" step="0.01"/><br/>
+            <input type="number" step="0.01" value="${sessionScope.form.preco}"/><br/>
             <button type="submit">Enviar</button>
             
         </form>
+        
+                        <c:if test="${!empty requestScope.mensagem}">
+            <ul class="erro">
+            <c:forEach items="${requestScope.mensagem}" var="mensagem">
+                <li>${mensagem}</li>
+            </c:forEach>
+            </ul>
+            <hr>
+        </c:if>
     </body>
 </html>

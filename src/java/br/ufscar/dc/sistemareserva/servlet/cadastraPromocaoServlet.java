@@ -13,6 +13,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -45,11 +47,14 @@ public class cadastraPromocaoServlet extends HttpServlet {
     DataSource datasource;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException{
         response.setContentType("text/html;charset=UTF-8");
         CadastraPromocaoFormBean cpfb = new CadastraPromocaoFormBean();
+        List<String> mensagens = new ArrayList<String>();
         try {
             BeanUtils.populate(cpfb, request.getParameterMap());
+            mensagens = cpfb.validar();
+            request.getSession().setAttribute("form",cpfb);
             Promocao promocao = new Promocao();
             promocao.setCnpj((String) request.getSession().getAttribute("cnpj"));
             System.out.println(promocao.getCnpj());
@@ -63,9 +68,14 @@ public class cadastraPromocaoServlet extends HttpServlet {
                 Promocao promocao_ret = null;
                 try {
                     promocao_ret = pdao.gravaPromocao(promocao);
+                    if (mensagens != null){
+                        request.setAttribute("mensagem", mensagens);
+                        request.getSession().setAttribute("form",cpfb);
+                        request.getRequestDispatcher("cadastraPromocao.jsp").forward(request,response);                   
+                    }
                 } catch (SQLException ex) {
                     Logger.getLogger(cadastraPromocaoServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    request.setAttribute("mensagem", ex.getLocalizedMessage());
+                    request.setAttribute("mensagem", "Erro ao acessar o banco.");
                     request.getRequestDispatcher("erro.jsp").forward(request, response);
                 }
                 if (promocao_ret != null) {
@@ -77,8 +87,9 @@ public class cadastraPromocaoServlet extends HttpServlet {
                 }
             } catch (ParseException ex) {
                 Logger.getLogger(cadastraPromocaoServlet.class.getName()).log(Level.SEVERE, null, ex);
-                request.getSession().setAttribute("mensagem", ex.getLocalizedMessage());
-                request.getRequestDispatcher("erro.jsp").forward(request, response);
+                mensagens.add("A data inserida não é valida.");
+                request.setAttribute("mensagem", mensagens);
+                request.getRequestDispatcher("cadastraPromocao.jsp").forward(request, response);
             }
            
             

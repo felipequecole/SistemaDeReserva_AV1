@@ -66,8 +66,16 @@ public class cadastraSiteServlet extends HttpServlet {
             response.sendRedirect("index.jsp");
         } catch (IllegalAccessException ex) {
             Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("mensagem", "Erro ao processar requisição.");
+            request.getRequestDispatcher("erro.jsp").forward(request, response);
         } catch (InvocationTargetException ex) {
             Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          catch (SQLException ex){
+            Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("mensagem", "Erro ao acessar o banco.");
+            request.getRequestDispatcher("erro.jsp").forward(request, response);
+              
         }
     }
 
@@ -87,7 +95,6 @@ public class cadastraSiteServlet extends HttpServlet {
             processRequest(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
-            // tratar erro
         } catch (NamingException ex) {
             Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
             // tratar erro
