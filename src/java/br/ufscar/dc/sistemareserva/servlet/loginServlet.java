@@ -12,6 +12,9 @@ import br.ufscar.dc.sistemareserva.dao.AdminDAO;
 import br.ufscar.dc.sistemareserva.dao.HotelDAO;
 import br.ufscar.dc.sistemareserva.dao.SiteDAO;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,54 +50,72 @@ public class loginServlet extends HttpServlet {
         String tipo = request.getParameter("tipo");
         if (tipo.equals("site")) {
             SiteDAO sdao = new SiteDAO(datasource);
-            Site site = sdao.buscarSite(username);
-//            System.out.println(site.getNome());
-            if (site == null){
-                request.getSession().setAttribute("login_mensagem", "Login Inválido!");
-                response.sendRedirect("login.jsp");
-            }
-            else if (site.getSenha().equals(senha)) {
-                request.getSession().setAttribute("user", site.getNome());
-                request.getSession().setAttribute("role", "site");
-                request.getSession().setAttribute("url", site.getUrl());
-                response.sendRedirect("index.jsp");
+            Site site = null;
+            try {
+                site = sdao.buscarSite(username);
+                if (site == null) {
+                    request.getSession().setAttribute("login_mensagem", "Login Inválido!");
+                    response.sendRedirect("login.jsp");
+                } else if (site.getSenha().equals(senha)) {
+                    request.getSession().setAttribute("user", site.getNome());
+                    request.getSession().setAttribute("role", "site");
+                    request.getSession().setAttribute("url", site.getUrl());
+                    response.sendRedirect("index.jsp");
 //                request.getRequestDispatcher("index.jsp").forward(request, response);
-            } else {
-                request.getSession().setAttribute("login_mensagem", "Login Inválido!");
-                response.sendRedirect("login.jsp");
+                } else {
+                    request.getSession().setAttribute("login_mensagem", "Login Inválido!");
+                    response.sendRedirect("login.jsp");
 //                request.getRequestDispatcher("login.jsp").forward(request, response);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(loginServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (tipo.equals("admin")){
+//            System.out.println(site.getNome());
+
+        } else if (tipo.equals("admin")) {
             AdminDAO adao = new AdminDAO(datasource);
-            Admin admin = adao.buscaAdmin(username);
-            if (admin == null) {
-                request.getSession().setAttribute("login_mensagem", "Login Inválido!");
-                response.sendRedirect("login.jsp");
-            } else if (admin.getSenha().equals(senha)) {
-                request.getSession().setAttribute("user", admin.getNome());
-                request.getSession().setAttribute("role", "admin");
-                response.sendRedirect("index.jsp");
-            } else { 
-                request.getSession().setAttribute("login_mensagem", "Login Inválido!");
-                response.sendRedirect("login.jsp");
+            Admin admin = null;
+            try {
+                admin = adao.buscaAdmin(username);
+                if (admin == null) {
+                    request.getSession().setAttribute("login_mensagem", "Login Inválido!");
+                    response.sendRedirect("login.jsp");
+                } else if (admin.getSenha().equals(senha)) {
+                    request.getSession().setAttribute("user", admin.getNome());
+                    request.getSession().setAttribute("role", "admin");
+                    response.sendRedirect("index.jsp");
+                } else {
+                    request.getSession().setAttribute("login_mensagem", "Login Inválido!");
+                    response.sendRedirect("login.jsp");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(loginServlet.class.getName()).log(Level.SEVERE, null, ex);
+
             }
-        } else if (tipo.equals("hotel")){
+
+        } else if (tipo.equals("hotel")) {
             HotelDAO hdao = new HotelDAO(datasource);
-            Hotel hotel = hdao.buscaHotel(username);
-            if (hotel == null) {
-                request.getSession().setAttribute("login_mensagem", "Login Inválido!");
-                response.sendRedirect("login.jsp");
-            } else if (hotel.getSenha().equals(senha)){
-                request.getSession().setAttribute("user", hotel.getNome());
-                request.getSession().setAttribute("role", "hotel");
-                request.getSession().setAttribute("cnpj", hotel.getCnpj());
-                response.sendRedirect("index.jsp");
-            } else {
-                request.getSession().setAttribute("login_mensagem", "Login Inválido!");
-                response.sendRedirect("login.jsp");
+            Hotel hotel = null;
+            try {
+                hotel = hdao.buscaHotel(username);
+                if (hotel == null) {
+                    request.getSession().setAttribute("login_mensagem", "Login Inválido!");
+                    response.sendRedirect("login.jsp");
+                } else if (hotel.getSenha().equals(senha)) {
+                    request.getSession().setAttribute("user", hotel.getNome());
+                    request.getSession().setAttribute("role", "hotel");
+                    request.getSession().setAttribute("cnpj", hotel.getCnpj());
+                    response.sendRedirect("index.jsp");
+                } else {
+                    request.getSession().setAttribute("login_mensagem", "Login Inválido!");
+                    response.sendRedirect("login.jsp");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(loginServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

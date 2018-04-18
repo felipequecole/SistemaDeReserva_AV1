@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
 <!DOCTYPE html>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -25,19 +26,27 @@
         <% }%>
         <br/>
         <h1>Sistema de reserva</h1> <br/>
-        <form action="ListaHotelServlet" method="GET">
-            <div>            
+        
+            <div>
+                <form action="ListaHotelServlet" method="GET">
                 <input type="text" name="cidade" placeholder="Buscar por cidade..."/>
-                <button type="submit">Buscar</button>            
+                <button type="submit">Buscar hotel</button>
+                </form> 
+                <a href="ListaHotelServlet"><button>Ver todos</button></a>
             </div>
-        </form> 
+        
         <ul>
+            <c:if test="${sessionScope.role == 'admin'}"> 
             <li><a href="cadastraSite.jsp">Cadastrar site</a></li>
             <li><a href="hotelForm.jsp">Cadastrar hotel</a></li>
+            </c:if>
             <li><a href="ListaHotelServlet">Listar hotéis</a></li>
+            <c:if test="${sessionScope.role == 'hotel'}">
             <li><a href="cadastraPromocao.jsp">Criar promoção</a></li>
-            <li><a href="VerPromocoesServlet">Listar promoções por hotel</a></li>
-            <li><a href="VerPromocoesServlet">Listar promoções por site</a></li>
+            </c:if>
+            <c:if test="${sessionScope.role == 'hotel' || sessionScope.role == 'site'}">
+            <li><a href="VerPromocoesServlet">Ver minhas promoções</a></li>
+            </c:if>
         </ul>
     </body>
     <% session.removeAttribute("mensagem");%>

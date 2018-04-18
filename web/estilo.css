@@ -52,3 +52,7 @@ html, body{
 .normal{
     float: left;
 }
+
+.nonclick {
+    cursor: default;
+}

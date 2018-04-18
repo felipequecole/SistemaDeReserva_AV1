@@ -12,6 +12,6 @@
         <a class="navright" href="login.jsp">Login</a>
     <% } else { %>
         <a class="navright" href="logout"> Logout </a>
-        <a class="navright" href="#"> ${sessionScope.user} (${sessionScope.role}) </a>
+        <a class="navright nonclick" href="."> ${sessionScope.user} (${sessionScope.role}) </a>
     <% }%>
 </div>

@@ -61,24 +61,19 @@ public class HotelDAO {
         return hotel;
     }
 
-    public Hotel buscaHotel(String cnpj) {
+    public Hotel buscaHotel(String cnpj) throws SQLException {
         Hotel hotel = new Hotel();
 
-        try {
-            java.sql.Connection con = datasource.getConnection();
-            PreparedStatement ps = con.prepareStatement(BUSCAR_HOTEL_SQL);
-            ps.setString(1, cnpj);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                hotel.setCnpj(rs.getString("cnpj"));
-                hotel.setNome(rs.getString("nome"));
-                hotel.setSenha(rs.getString("senha"));
-                hotel.setCidade(rs.getString("cidade"));
-            } else {
-                return null;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(HotelDAO.class.getName()).log(Level.SEVERE, null, ex);
+        java.sql.Connection con = datasource.getConnection();
+        PreparedStatement ps = con.prepareStatement(BUSCAR_HOTEL_SQL);
+        ps.setString(1, cnpj);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            hotel.setCnpj(rs.getString("cnpj"));
+            hotel.setNome(rs.getString("nome"));
+            hotel.setSenha(rs.getString("senha"));
+            hotel.setCidade(rs.getString("cidade"));
+        } else {
             return null;
         }
 
@@ -124,7 +119,7 @@ public class HotelDAO {
             lista.add(h);
         }
 
-       return (lista.isEmpty() ? null : lista);
+        return (lista.isEmpty() ? null : lista);
     }
 
 }

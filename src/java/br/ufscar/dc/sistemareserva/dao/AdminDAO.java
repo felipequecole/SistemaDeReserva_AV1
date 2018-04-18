@@ -31,24 +31,19 @@ public class AdminDAO {
         this.datasource = datasource;
     }
 
-    public Admin buscaAdmin(String username) {
+    public Admin buscaAdmin(String username) throws SQLException {
         Admin admin = new Admin();
-        try {
-            Connection con = datasource.getConnection();
-            PreparedStatement ps = con.prepareStatement(BUSCAR_ADMIN_SQL);
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                admin.setEmail(rs.getString("email"));
-                admin.setSenha(rs.getString("senha"));
-                admin.setNome(rs.getString("nome"));
-            } else {
-                return null;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(SiteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Connection con = datasource.getConnection();
+        PreparedStatement ps = con.prepareStatement(BUSCAR_ADMIN_SQL);
+        ps.setString(1, username);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            admin.setEmail(rs.getString("email"));
+            admin.setSenha(rs.getString("senha"));
+            admin.setNome(rs.getString("nome"));
+        } else {
             return null;
         }
-        return admin; 
+        return admin;
     }
 }
