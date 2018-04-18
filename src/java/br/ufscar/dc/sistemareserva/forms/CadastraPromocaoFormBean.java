@@ -5,6 +5,7 @@
  */
 package br.ufscar.dc.sistemareserva.forms;
 
+import br.ufscar.dc.sistemareserva.dao.PromocaoDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sql.DataSource;
 
 /**
  *
@@ -19,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class CadastraPromocaoFormBean {
     private String url, data_inicio, data_fim;
-    private float preco; 
+    private float preco;
 
     public String getUrl() {
         return url;
@@ -53,8 +55,9 @@ public class CadastraPromocaoFormBean {
         this.preco = preco;
     }
     
-    public List<String> validar(){
+    public List<String> validar(DataSource datasource, String cnpj){
     List<String> mensagens = new ArrayList<String>();
+    PromocaoDAO pDao = new PromocaoDAO(datasource);
     
     if(url.trim().length() == 0){
         mensagens.add("O endereço não pode ser vazio!");
@@ -70,6 +73,9 @@ public class CadastraPromocaoFormBean {
     
     if (preco < 0){
         mensagens.add("O preço não pode ser menor que zero !");       
+    }
+    if(pDao.validaPromocao(url, cnpj ,data_inicio)){
+        mensagens.add("Já existe uma promoção nesse hotel/site com a mesma data de inicio");
     }
     
     Date inicio = new Date();
