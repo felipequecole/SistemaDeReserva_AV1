@@ -30,7 +30,7 @@
                 <input type="text" name="cidade" placeholder="Buscar por cidade..."/>
                 <button type="submit">Buscar</button>            
             </div>
-        </form>
+        </form> 
         <ul>
             <li><a href="cadastraSite.jsp">Cadastrar site</a></li>
             <li><a href="hotelForm.jsp">Cadastrar hotel</a></li>
