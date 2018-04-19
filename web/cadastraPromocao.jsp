@@ -30,7 +30,7 @@
             <label for="data_fim">Data de fim: </label>
             <input type="text" name="data_fim" placeholder="dd/mm/yyyy" value="${sessionScope.form.data_fim}"/> <br/>
             <label for="preco">Preço:</label>
-            <input type="number" step="0.01" value="${sessionScope.form.preco}"/><br/>
+            <input type="text" name="preco" value="${sessionScope.form.preco}"/><br/>
             <button type="submit">Enviar</button>
             
         </form>

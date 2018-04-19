@@ -6,6 +6,7 @@
 package br.ufscar.dc.sistemareserva.forms;
 
 import br.ufscar.dc.sistemareserva.dao.PromocaoDAO;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,8 +21,9 @@ import javax.sql.DataSource;
  * @author felipequecole
  */
 public class CadastraPromocaoFormBean {
-    private String url, data_inicio, data_fim;
-    private float preco;
+
+    private String url, data_inicio, data_fim, preco;
+//    private float preco;
 
     public String getUrl() {
         return url;
@@ -47,60 +49,69 @@ public class CadastraPromocaoFormBean {
         this.data_fim = data_fim;
     }
 
-    public float getPreco() {
+    public String getPreco() {
         return preco;
     }
 
-    public void setPreco(float preco) {
+    public void setPreco(String preco) {
         this.preco = preco;
     }
-    
-    public List<String> validar(DataSource datasource, String cnpj){
-    List<String> mensagens = new ArrayList<String>();
-    PromocaoDAO pDao = new PromocaoDAO(datasource);
-    
-    if(url.trim().length() == 0){
-        mensagens.add("O endereço não pode ser vazio!");
-    }
-    
-    if (data_inicio.trim().length() == 0){
-        mensagens.add("A data de inicio não pode ser vazia!");    
-    }
-    
-    if (data_fim.trim().length() == 0){
-        mensagens.add("A data de fim não pode ser vazia!");    
-    }
-    
-    if (preco < 0){
-        mensagens.add("O preço não pode ser menor que zero !");       
-    }
-    if(pDao.validaPromocao(url, cnpj ,data_inicio)){
-        mensagens.add("Já existe uma promoção nesse hotel/site com a mesma data de inicio");
-    }
-    
-    Date inicio = new Date();
-    Date fim =  new Date();
-    
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    
+
+    public List<String> validar(DataSource datasource, String cnpj) {
+        List<String> mensagens = new ArrayList<String>();
+        PromocaoDAO pDao = new PromocaoDAO(datasource);
+
+        if (url.trim().length() == 0) {
+            mensagens.add("O endereço não pode ser vazio!");
+        }
+
+        if (data_inicio.trim().length() == 0) {
+            mensagens.add("A data de inicio não pode ser vazia!");
+        }
+
+        if (data_fim.trim().length() == 0) {
+            mensagens.add("A data de fim não pode ser vazia!");
+        }
+
+        if (Float.parseFloat(preco) < 0) {
+            mensagens.add("O preço não pode ser menor que zero !");
+        }
+
+        Date inicio = new Date();
+        Date fim = new Date();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
         try {
             inicio = sdf.parse(data_inicio);
         } catch (ParseException ex) {
+            inicio = null;
             Logger.getLogger(CadastraPromocaoFormBean.class.getName()).log(Level.SEVERE, null, ex);
-            mensagens.add("Data de inicio não é valida!");      
+            mensagens.add("Data de inicio não é valida!");
         }
         try {
             fim = sdf.parse(data_fim);
         } catch (ParseException ex) {
             Logger.getLogger(CadastraPromocaoFormBean.class.getName()).log(Level.SEVERE, null, ex);
-            mensagens.add("Data de fim não é valida!");     
+            mensagens.add("Data de fim não é valida!");
         }
-    
-        if (fim.getTime() - inicio.getTime() <= 0){
+
+        if (fim.getTime() - inicio.getTime() <= 0) {
             mensagens.add("Intervalo de datas não é válido.");
         }
-    return (mensagens.isEmpty() ? null : mensagens);
+        if (inicio != null) {
+
+            try {
+                if (!pDao.validaPromocao(url, cnpj, inicio)) {
+                    mensagens.add("Já existe uma promoção nesse hotel/site com a mesma data de inicio");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CadastraPromocaoFormBean.class.getName()).log(Level.SEVERE, null, ex);
+                mensagens.add("Problemas técnicos ao acessar o banco");
+            }
+            
+        }
+        return (mensagens.isEmpty() ? null : mensagens);
     }
-    
-    
+
 }

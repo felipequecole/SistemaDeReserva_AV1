@@ -50,4 +50,5 @@
         </ul>
     </body>
     <% session.removeAttribute("mensagem");%>
+    <% session.removeAttribute("form");%>
 </html>

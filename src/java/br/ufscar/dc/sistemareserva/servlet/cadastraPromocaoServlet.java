@@ -62,7 +62,7 @@ public class cadastraPromocaoServlet extends HttpServlet {
             try {
                 promocao.setData_inicio(sdf.parse(cpfb.getData_inicio()));
                 promocao.setData_fim(sdf.parse(cpfb.getData_fim()));
-                promocao.setPreco(cpfb.getPreco());
+                promocao.setPreco(Float.parseFloat(cpfb.getPreco()));
                 promocao.setUrl(cpfb.getUrl());
                 if (mensagens != null) {
                     request.setAttribute("mensagem", mensagens);
