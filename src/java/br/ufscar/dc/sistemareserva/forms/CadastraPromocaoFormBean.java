@@ -102,7 +102,7 @@ public class CadastraPromocaoFormBean {
         if (inicio != null) {
 
             try {
-                if (!pDao.validaPromocao(url, cnpj, inicio)) {
+                if (!pDao.validaPromocao(cnpj, url, inicio)) {
                     mensagens.add("Já existe uma promoção nesse hotel/site com a mesma data de inicio");
                 }
             } catch (SQLException ex) {
