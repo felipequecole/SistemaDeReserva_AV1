@@ -33,16 +33,18 @@ public class AdminDAO {
 
     public Admin buscaAdmin(String username) throws SQLException {
         Admin admin = new Admin();
-        Connection con = datasource.getConnection();
-        PreparedStatement ps = con.prepareStatement(BUSCAR_ADMIN_SQL);
-        ps.setString(1, username);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            admin.setEmail(rs.getString("email"));
-            admin.setSenha(rs.getString("senha"));
-            admin.setNome(rs.getString("nome"));
-        } else {
-            return null;
+        try (Connection con = datasource.getConnection();
+                PreparedStatement ps = con.prepareStatement(BUSCAR_ADMIN_SQL);) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
+                    admin.setEmail(rs.getString("email"));
+                    admin.setSenha(rs.getString("senha"));
+                    admin.setNome(rs.getString("nome"));
+                } else {
+                    return null;
+                }
+            }
         }
         return admin;
     }

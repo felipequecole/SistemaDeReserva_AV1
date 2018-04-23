@@ -64,61 +64,64 @@ public class HotelDAO {
     public Hotel buscaHotel(String cnpj) throws SQLException {
         Hotel hotel = new Hotel();
 
-        java.sql.Connection con = datasource.getConnection();
-        PreparedStatement ps = con.prepareStatement(BUSCAR_HOTEL_SQL);
-        ps.setString(1, cnpj);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            hotel.setCnpj(rs.getString("cnpj"));
-            hotel.setNome(rs.getString("nome"));
-            hotel.setSenha(rs.getString("senha"));
-            hotel.setCidade(rs.getString("cidade"));
-        } else {
-            return null;
+        try (java.sql.Connection con = datasource.getConnection();
+                PreparedStatement ps = con.prepareStatement(BUSCAR_HOTEL_SQL);) {
+            ps.setString(1, cnpj);
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
+                    hotel.setCnpj(rs.getString("cnpj"));
+                    hotel.setNome(rs.getString("nome"));
+                    hotel.setSenha(rs.getString("senha"));
+                    hotel.setCidade(rs.getString("cidade"));
+                } else {
+                    return null;
+                }
+            }
         }
-
         return hotel;
     }
 
     public List<Hotel> listaTodosHoteis() throws SQLException, NamingException {
         List<Hotel> lista = new ArrayList<>();
 
-        Connection con = datasource.getConnection();
-        PreparedStatement ps = con.prepareStatement(LISTAR_HOTEIS_SQL);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
+        try (Connection con = datasource.getConnection();
+                PreparedStatement ps = con.prepareStatement(LISTAR_HOTEIS_SQL);) {
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
 
-            Hotel h = new Hotel();
-            h.setCnpj(rs.getString("cnpj"));
-            h.setNome(rs.getString("nome"));
-            h.setCidade(rs.getString("cidade"));
+                    Hotel h = new Hotel();
+                    h.setCnpj(rs.getString("cnpj"));
+                    h.setNome(rs.getString("nome"));
+                    h.setCidade(rs.getString("cidade"));
 
-            lista.add(h);
+                    lista.add(h);
+                }
+            }
         }
-
         return (lista.isEmpty() ? null : lista);
     }
 
     public List<Hotel> listaTodosHoteisCidade(String cidade) throws SQLException, NamingException {
         List<Hotel> lista = new ArrayList<>();
 
-        Connection con = datasource.getConnection();
-        PreparedStatement ps = con.prepareStatement(LISTAR_HOTEIS_CIDADE_SQL);
+        try (Connection con = datasource.getConnection();
+                PreparedStatement ps = con.prepareStatement(LISTAR_HOTEIS_CIDADE_SQL);) {
 
-        ps.setString(1, cidade);
+            ps.setString(1, cidade);
 
-        ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery();) {
 
-        while (rs.next()) {
+                while (rs.next()) {
 
-            Hotel h = new Hotel();
-            h.setCnpj(rs.getString("cnpj"));
-            h.setNome(rs.getString("nome"));
-            h.setCidade(rs.getString("cidade"));
+                    Hotel h = new Hotel();
+                    h.setCnpj(rs.getString("cnpj"));
+                    h.setNome(rs.getString("nome"));
+                    h.setCidade(rs.getString("cidade"));
 
-            lista.add(h);
+                    lista.add(h);
+                }
+            }
         }
-
         return (lista.isEmpty() ? null : lista);
     }
 

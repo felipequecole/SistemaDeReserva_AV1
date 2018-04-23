@@ -17,19 +17,19 @@
     <body>
         <jsp:include page="navbar.jsp" />
         <div class="content">
-        <h1>Um erro inesperado aconteceu!</h1>
-        
-        <c:if test="${!empty requestScope.mensagem}">
-            <div class="error_message">
-            <ul class="erro">
-                <c:forEach items="${requestScope.mensagem}" var="mensagem">
-                    <li>${mensagem}</li>
-                    </c:forEach>
-            </ul>
-            <hr>
-         </div>
-        </c:if>
-         </div>
+            <h1>Um erro inesperado aconteceu!</h1>
+
+            <c:if test="${!empty requestScope.mensagem}">
+                <div class="error_message">
+                    <ul class="erro">
+                        <c:forEach items="${requestScope.mensagem}" var="mensagem">
+                            <li>${mensagem}</li>
+                            </c:forEach>
+                    </ul>
+                    <hr>
+                </div>
+            </c:if>
+        </div>
         <jsp:include page="footer.html"/>
     </body>
 </html>
