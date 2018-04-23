@@ -68,6 +68,8 @@ public class ListaHotelServlet extends HttpServlet {
                 todosOsHoteis = hotelDAO.listaTodosHoteisCidade(cidade.toUpperCase());
             } catch (SQLException ex) {
                 Logger.getLogger(ListaHotelServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("mensagem", "Erro ao acessar o banco.");
+                request.getRequestDispatcher("erro.jsp").forward(request, response);
             } catch (NamingException ex) {
                 Logger.getLogger(ListaHotelServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
