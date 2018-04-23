@@ -64,7 +64,9 @@ public class cadastraPromocaoServlet extends HttpServlet {
             try {
                 promocao.setData_inicio(sdf.parse(cpfb.getData_inicio()));
                 promocao.setData_fim(sdf.parse(cpfb.getData_fim()));
-                promocao.setPreco(Float.parseFloat(cpfb.getPreco()));
+                String preco = cpfb.getPreco();
+                preco = preco.replace(",", ".");
+                promocao.setPreco(Float.parseFloat(preco));
                 promocao.setUrl(cpfb.getUrl());
                 if (mensagens != null) {
                     request.setAttribute("mensagem", mensagens);
@@ -102,8 +104,20 @@ public class cadastraPromocaoServlet extends HttpServlet {
                 }
             } catch (ParseException ex) {
                 Logger.getLogger(cadastraPromocaoServlet.class.getName()).log(Level.SEVERE, null, ex);
-                request.setAttribute("mensagem", mensagens);
-                request.getRequestDispatcher("cadastraPromocao.jsp").forward(request, response);
+                SiteDAO sdao = new SiteDAO(datasource);
+                    try {
+                        List<Site> sites = sdao.listarTodosSites();
+                        request.setAttribute("sites", sites);
+//                        request.getRequestDispatcher("cadastraPromocao.jsp").forward(request, response);
+                        request.removeAttribute("mensagem");
+                        request.setAttribute("mensagem", mensagens);
+                        System.out.println(mensagens.get(0));
+                        request.getRequestDispatcher("cadastraPromocao.jsp").forward(request, response);
+                    } catch (SQLException e) {
+                        Logger.getLogger(cadastraPromocaoServlet.class.getName()).log(Level.SEVERE, null, e);
+                        request.setAttribute("mensagem", "Problemas ao acessar o banco de dados.");
+                        request.getRequestDispatcher("erro.jsp").forward(request, response);
+                    }                
             }
 
         } catch (IllegalAccessException ex) {

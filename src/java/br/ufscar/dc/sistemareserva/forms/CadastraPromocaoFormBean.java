@@ -61,22 +61,25 @@ public class CadastraPromocaoFormBean {
         List<String> mensagens = new ArrayList<String>();
         PromocaoDAO pDao = new PromocaoDAO(datasource);
 
-        if (url.trim().length() == 0) {
-            mensagens.add("O endereço não pode ser vazio!");
+        if (url == null) {
+            mensagens.add("O campo URL não pode estar vazio");
+        } else {
+            if (url.trim().length() == 0) {
+                mensagens.add("O endereço não pode ser vazio!");
+            }
         }
 
-        if (data_inicio.trim().length() == 0) {
-            mensagens.add("A data de inicio não pode ser vazia!");
+        if (preco == null && !preco.equals("")) {
+            mensagens.add("O campo preço não pode estar vazio");
+        } else {
+            try {
+                if (Float.parseFloat(preco.replace(",", ".")) < 0) {
+                    mensagens.add("O preço não pode ser menor que zero !");
+                }
+            } catch (NumberFormatException e) {
+                mensagens.add("O campo preço não pode estar vazio");
+            }
         }
-
-        if (data_fim.trim().length() == 0) {
-            mensagens.add("A data de fim não pode ser vazia!");
-        }
-
-        if (Float.parseFloat(preco) < 0) {
-            mensagens.add("O preço não pode ser menor que zero !");
-        }
-
         Date inicio = new Date();
         Date fim = new Date();
 
@@ -96,10 +99,11 @@ public class CadastraPromocaoFormBean {
             mensagens.add("Data de fim não é valida!");
         }
 
-        if (fim.getTime() - inicio.getTime() <= 0) {
-            mensagens.add("Intervalo de datas não é válido.");
-        }
-        if (inicio != null) {
+        if (inicio != null && fim != null) {
+
+            if (fim.getTime() - inicio.getTime() <= 0) {
+                mensagens.add("Intervalo de datas não é válido.");
+            }
 
             try {
                 if (!pDao.validaPromocao(cnpj, url, inicio)) {
@@ -109,7 +113,7 @@ public class CadastraPromocaoFormBean {
                 Logger.getLogger(CadastraPromocaoFormBean.class.getName()).log(Level.SEVERE, null, ex);
                 mensagens.add("Problemas técnicos ao acessar o banco");
             }
-            
+
         }
         return (mensagens.isEmpty() ? null : mensagens);
     }

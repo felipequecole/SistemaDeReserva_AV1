@@ -42,14 +42,17 @@
             </form>
 
             <c:if test="${!empty requestScope.mensagem}">
-                <ul class="erro">
-                    <c:forEach items="${requestScope.mensagem}" var="mensagem">
-                        <li>${mensagem}</li>
-                        </c:forEach>
-                </ul>
+                <div class="error_message">
+                    <ul>
+                        <c:forEach items="${requestScope.mensagem}" var="mensagem">
+                            <li>${mensagem}</li>
+                            </c:forEach>
+                    </ul>
+                </div>
                 <hr>
             </c:if>
         </div>
         <jsp:include page="footer.html"/>
+        <%--<c:remove scope="session" var="form"/>--%>
     </body>
 </html>

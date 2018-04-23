@@ -83,7 +83,8 @@ html, body{
     box-shadow:1px 1px 3px #888;
     padding: 1px 1px 1px 1px;
     margin-top: 10px;
-    text-align: center;  
+    text-align: center; 
+    
 }
 
 .success_message{
@@ -105,6 +106,18 @@ html, body{
     margin-top: 10px;
     text-align: center;
     
+}
+
+.error_message ul {
+    list-style-type: none; 
+}
+
+.warning_message ul {
+    list-style-type: none;
+}
+
+.success_message ul {
+    list-style-type: none;
 }
 
 .content{

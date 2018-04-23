@@ -31,7 +31,7 @@ create table Promocao
     cnpj varchar(256) references Hotel(cnpj) on delete cascade,
     data_inicio Date not null, 
     data_fim Date not null,
-    preco Decimal not null,
+    preco Real not null,
     CONSTRAINT promocao_primary_key PRIMARY KEY (id)
 ); 
 

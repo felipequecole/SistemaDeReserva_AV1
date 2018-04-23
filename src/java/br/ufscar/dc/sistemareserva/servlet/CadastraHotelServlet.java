@@ -59,7 +59,6 @@ public class CadastraHotelServlet extends HttpServlet {
             List<String> mensagens = chfb.validar();
             
             if(mensagens != null){
-             request.getSession().setAttribute("mensagens", mensagens);
              request.setAttribute("mensagens", mensagens);
              for (String msg : mensagens) {
                  System.out.println(msg);
