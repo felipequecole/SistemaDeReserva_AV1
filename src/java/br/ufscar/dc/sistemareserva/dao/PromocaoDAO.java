@@ -49,38 +49,43 @@ public class PromocaoDAO {
     }
 
     public Promocao gravaPromocao(Promocao promocao) throws SQLException {
-        Connection con = datasource.getConnection();
-        PreparedStatement ps = con.prepareStatement(CRIAR_PROMOCAO_SQL, Statement.RETURN_GENERATED_KEYS);
 
-        ps.setString(1, promocao.getUrl());
-        ps.setString(2, promocao.getCnpj());
-        ps.setDate(3, new java.sql.Date(promocao.getData_inicio().getTime()));
-        ps.setDate(4, new java.sql.Date(promocao.getData_fim().getTime()));
-        ps.setFloat(5, promocao.getPreco());
-        ps.execute();
-        try (ResultSet rs = ps.getGeneratedKeys()) {
-            rs.next();
-            promocao.setId(rs.getInt(1));
+        try (Connection con = datasource.getConnection();
+                PreparedStatement ps = con.prepareStatement(CRIAR_PROMOCAO_SQL, Statement.RETURN_GENERATED_KEYS);) {
+            ps.setString(1, promocao.getUrl());
+            ps.setString(2, promocao.getCnpj());
+            ps.setDate(3, new java.sql.Date(promocao.getData_inicio().getTime()));
+            ps.setDate(4, new java.sql.Date(promocao.getData_fim().getTime()));
+            ps.setFloat(5, promocao.getPreco());
+            ps.execute();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                rs.next();
+                promocao.setId(rs.getInt(1));
+            }
+
         }
+
         return promocao;
     }
 
     public Boolean validaPromocao(String cnpj, String url, Date data_inicio) throws SQLException {
 
-        Connection con = datasource.getConnection();
-        PreparedStatement ps = con.prepareStatement(VALIDA_SQL);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        
+        try (Connection con = datasource.getConnection();
+                PreparedStatement ps = con.prepareStatement(VALIDA_SQL);) {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-        ps.setString(1, url);
-        ps.setString(2, cnpj);
-        ps.setString(3, df.format(data_inicio));
-        System.out.println(df.format(data_inicio));
+            ps.setString(1, url);
+            ps.setString(2, cnpj);
+            ps.setString(3, df.format(data_inicio));
+            System.out.println(df.format(data_inicio));
 
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            System.out.println("ACHOU UMA IGUAL, URL:" + rs.getString("url"));
-            return false;
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
+                    System.out.println("ACHOU UMA IGUAL, URL:" + rs.getString("url"));
+                    return false;
+                }
+            }
+
         }
 
         return true;
@@ -88,19 +93,22 @@ public class PromocaoDAO {
 
     public List<Promocao> listaPromocaoHotel(String cnpj) throws SQLException {
         ArrayList<Promocao> ret = new ArrayList();
-        Connection con = datasource.getConnection();
-        PreparedStatement ps = con.prepareStatement(BUSCA_PROMOCAO_POR_HOTEL_SQL);
-        ps.setString(1, cnpj);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Promocao promo = new Promocao();
-            promo.setCnpj(rs.getString("cnpj"));
-            promo.setData_fim(rs.getDate("data_fim"));
-            promo.setData_inicio(rs.getDate("data_inicio"));
-            promo.setUrl(rs.getString("url"));
-            promo.setId(rs.getInt("id"));
-            promo.setPreco(rs.getFloat("preco"));
-            ret.add(promo);
+        try (Connection con = datasource.getConnection();
+                PreparedStatement ps = con.prepareStatement(BUSCA_PROMOCAO_POR_HOTEL_SQL);) {
+            ps.setString(1, cnpj);
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    Promocao promo = new Promocao();
+                    promo.setCnpj(rs.getString("cnpj"));
+                    promo.setData_fim(rs.getDate("data_fim"));
+                    promo.setData_inicio(rs.getDate("data_inicio"));
+                    promo.setUrl(rs.getString("url"));
+                    promo.setId(rs.getInt("id"));
+                    promo.setPreco(rs.getFloat("preco"));
+                    ret.add(promo);
+                }
+            }
+
         }
 
         return (ret.isEmpty() ? null : ret);
@@ -108,19 +116,22 @@ public class PromocaoDAO {
 
     public List<Promocao> listaPromocaoSite(String url) throws SQLException {
         ArrayList<Promocao> ret = new ArrayList();
-        Connection con = datasource.getConnection();
-        PreparedStatement ps = con.prepareStatement(BUSCA_PROMOCAO_POR_SITE_SQL);
-        ps.setString(1, url);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Promocao promo = new Promocao();
-            promo.setUrl(rs.getString("url"));
-            promo.setCnpj(rs.getString("cnpj"));
-            promo.setData_fim(rs.getDate("data_fim"));
-            promo.setData_inicio(rs.getDate("data_inicio"));
-            promo.setId(rs.getInt("id"));
-            promo.setPreco(rs.getFloat("preco"));
-            ret.add(promo);
+        try (Connection con = datasource.getConnection();
+                PreparedStatement ps = con.prepareStatement(BUSCA_PROMOCAO_POR_SITE_SQL);) {
+            ps.setString(1, url);
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    Promocao promo = new Promocao();
+                    promo.setUrl(rs.getString("url"));
+                    promo.setCnpj(rs.getString("cnpj"));
+                    promo.setData_fim(rs.getDate("data_fim"));
+                    promo.setData_inicio(rs.getDate("data_inicio"));
+                    promo.setId(rs.getInt("id"));
+                    promo.setPreco(rs.getFloat("preco"));
+                    ret.add(promo);
+                }
+            }
+
         }
 
         return (ret.isEmpty() ? null : ret);

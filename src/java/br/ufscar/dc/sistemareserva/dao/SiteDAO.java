@@ -58,31 +58,38 @@ public class SiteDAO {
 
     public Site buscarSite(String url) throws SQLException {
         Site site = new Site();
-        Connection con = datasource.getConnection();
-        PreparedStatement ps = con.prepareStatement(BUSCAR_SITE_SQL);
-        ps.setString(1, url);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            site.setNome(rs.getString("nome"));
-            site.setSenha(rs.getString("senha"));
-            site.setTelefone(rs.getString("telefone"));
-            site.setUrl(rs.getString("url"));
-        } else {
-            return null;
+        try (Connection con = datasource.getConnection();
+                PreparedStatement ps = con.prepareStatement(BUSCAR_SITE_SQL);) {
+            ps.setString(1, url);
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
+                    site.setNome(rs.getString("nome"));
+                    site.setSenha(rs.getString("senha"));
+                    site.setTelefone(rs.getString("telefone"));
+                    site.setUrl(rs.getString("url"));
+                } else {
+                    return null;
+                }
+            }
+
         }
+
         return site;
     }
 
     public List<Site> listarTodosSites() throws SQLException {
         ArrayList<Site> s = new ArrayList();
-        Connection con = datasource.getConnection();
-        PreparedStatement ps = con.prepareStatement(LISTAR_TODOS_SITES);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Site aux = new Site();
-            aux.setNome(rs.getString("nome"));
-            aux.setUrl(rs.getString("url"));
-            s.add(aux);
+        try (Connection con = datasource.getConnection();
+                PreparedStatement ps = con.prepareStatement(LISTAR_TODOS_SITES);) {
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    Site aux = new Site();
+                    aux.setNome(rs.getString("nome"));
+                    aux.setUrl(rs.getString("url"));
+                    s.add(aux);
+                }
+            }
+
         }
 
         return s;
