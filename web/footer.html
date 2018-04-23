@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<div class="footer">
+    <div class="footer_content">
+        <p>Sistema desenvolvido para a disciplina de Desenvolvimento de Software 
+            para a web ministrada pelo professor Daniel Lucrédio - Universidade
+            Federal de São Carlos</p>
+        <p>Grupo:</p>
+        <ul>
+            <li>Eduardo Yamauchi</li>
+            <li>Felipe Quécole</li>
+            <li>Frankson Teotonho</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    $(window).on('scroll', function() {
+        if ($(window).scrollTop() > 100) {
+            $('.footer').slideDown();
+        } else {
+            $('.footer').slideUp('fast');
+        }
+    });
+</script>

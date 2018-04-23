@@ -74,7 +74,7 @@ public class cadastraPromocaoServlet extends HttpServlet {
                     try {
                         promocao_ret = pdao.gravaPromocao(promocao);
                         if (promocao_ret != null) {
-                            request.setAttribute("mensagem", "Promoção cadastrada com sucesso!");
+                            request.getSession().setAttribute("mensagem", "Promoção cadastrada com sucesso!");
                             response.sendRedirect("index.jsp");
                         } else {
                             request.setAttribute("mensagem", "Erro ao salvar no banco");

@@ -11,19 +11,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="estilo.css" />
+        <script src="jquery-3.3.1.min.js"></script>
         <title>Ops!</title>
     </head>
     <body>
         <jsp:include page="navbar.jsp" />
         <h1>Um erro inesperado aconteceu!</h1>
-          <c:if test="${!empty requestScope.mensagem}">
+        <c:if test="${!empty requestScope.mensagem}">
             <ul class="erro">
-            <c:forEach items="${requestScope.mensagem}" var="mensagem">
-                <li>${mensagem}</li>
-            </c:forEach>
+                <c:forEach items="${requestScope.mensagem}" var="mensagem">
+                    <li>${mensagem}</li>
+                    </c:forEach>
             </ul>
             <hr>
         </c:if>
-
+        <jsp:include page="footer.html"/>
     </body>
 </html>

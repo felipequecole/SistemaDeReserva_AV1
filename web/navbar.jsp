@@ -8,6 +8,14 @@
 <!DOCTYPE html>
 <div class="topnav">
     <a class="active normal" href="index.jsp">Página inicial</a>
+    <div class="caixa_busca">
+     <form action="ListaHotelServlet" method="GET">
+         <label for="cidade">Pesquise por cidade:</label>
+                <input type="text" name="cidade" placeholder="Buscar por cidade..."/>
+                <button type="submit">Buscar hotel</button>
+                </form> 
+     </div>
+    <a class="normal" href="ListaHotelServlet">Listar hotéis</a>
     <% if (session.getAttribute("user") == null) { %>
         <a class="navright" href="login.jsp">Login</a>
     <% } else { %>

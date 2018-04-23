@@ -13,7 +13,9 @@ and open the template in the editor.
 
 html, body{ 
   min-width:100%;
+  min-height: 100vh;
   margin: 0;
+  background-color: #e2e2e2;
 }
 
 .topnav {
@@ -28,7 +30,7 @@ html, body{
 /*    float: left;*/
     color: #f2f2f2;
     text-align: center;
-    padding: 14px 16px;
+    padding: 12px 16px;
     text-decoration: none;
     font-size: 17px;
 }
@@ -49,6 +51,23 @@ html, body{
     float: right;
 }
 
+.caixa_busca{
+    display: inline-block;
+    width: 30em;
+    color: #f2f2f2;
+    align-content: center;
+    align-items: center; 
+    padding: 4px 2px;
+}
+
+.caixa_busca input{
+    height: 30px ;
+}
+
+.caixa_busca button{
+    height: 35px;
+}
+
 .normal{
     float: left;
 }
@@ -56,3 +75,90 @@ html, body{
 .nonclick {
     cursor: default;
 }
+
+.error_message{
+    color: #D8000C;
+    background-color: #FFD2D2;
+    border-radius:.5em;
+    box-shadow:1px 1px 3px #888;
+    padding: 1px 1px 1px 1px;
+    margin-top: 10px;
+    text-align: center;  
+}
+
+.success_message{
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    border-radius:.5em;
+    box-shadow:1px 1px 3px #888;
+    padding: 1px 1px 1px 1px;
+    margin-top: 10px;
+    text-align: center;  
+}
+
+.warning_message{
+    color: #9F6000;
+    background-color: #FEEFB3;
+    border-radius:.5em;
+    box-shadow:1px 1px 3px #888;
+    padding: 10px 10px 10px 10px;
+    margin-top: 10px;
+    text-align: center;
+    
+}
+
+.content{
+   width: 600px;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 10px;
+   min-height: 100vh;
+   margin-bottom: 40px;
+}
+
+.footer_content{
+   width: 600px;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 10px;
+}
+
+table {
+	text-align: center;
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    display: none;
+}
+
+.footer ul {
+	margin-top: -8px;
+	margin-left: -40px;
+	list-style-type: none;
+}
+
+.home_btn {
+	width: auto;
+	height: 100px;
+	padding-right: 50px;
+	padding-left: 50px;
+	text-decoration: none; 
+	background-color: #4CAF50;
+	color: white;
+	box-shadow:1px 1px 3px #888;
+	font-size: 20px;
+}
+

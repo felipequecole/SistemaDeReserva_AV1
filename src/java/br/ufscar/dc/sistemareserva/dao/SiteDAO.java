@@ -35,8 +35,8 @@ public class SiteDAO {
             + "where url=?";
 
     private final static String LISTAR_TODOS_SITES = "select "
-            + "nome,url"
-            + "from site ";
+            + "nome,url "
+            + "from site";
 
     DataSource datasource;
 
@@ -73,22 +73,18 @@ public class SiteDAO {
         return site;
     }
 
-    public List<Site> listarTodosSites() {
+    public List<Site> listarTodosSites() throws SQLException {
         ArrayList<Site> s = new ArrayList();
-        try {
-            Connection con = datasource.getConnection();
-            PreparedStatement ps = con.prepareStatement(LISTAR_TODOS_SITES);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Site aux = new Site();
-                aux.setNome(rs.getString("nome"));
-                aux.setUrl(rs.getString("url"));
-                s.add(aux);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(SiteDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+        Connection con = datasource.getConnection();
+        PreparedStatement ps = con.prepareStatement(LISTAR_TODOS_SITES);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Site aux = new Site();
+            aux.setNome(rs.getString("nome"));
+            aux.setUrl(rs.getString("url"));
+            s.add(aux);
         }
+
         return s;
 
     }

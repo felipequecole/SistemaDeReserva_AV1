@@ -5,20 +5,27 @@
  */
 package br.ufscar.dc.sistemareserva.servlet;
 
+import br.ufscar.dc.sistemareserva.beans.Site;
+import br.ufscar.dc.sistemareserva.dao.SiteDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 /**
  *
  * @author felipequecole
  */
-@WebServlet(name = "logout", urlPatterns = {"/logout"})
-public class logout extends HttpServlet {
+@WebServlet(name = "FormPromocaoServlet", urlPatterns = {"/FormPromocaoServlet"})
+public class FormPromocaoServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,17 +35,26 @@ public class logout extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * 
      */
+    @Resource(name = "jdbc/SistemaReservaDBLocal")
+    DataSource datasource;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getSession().removeAttribute("user");
-        request.getSession().removeAttribute("role");
-        request.getSession().removeAttribute("cnpj");
-        request.getSession().removeAttribute("url");
-        request.getSession().invalidate();
-        response.sendRedirect("index.jsp");
+        SiteDAO sdao = new SiteDAO(datasource);
+        List<Site> sites = null; 
+        try {
+            sites = sdao.listarTodosSites();
+            request.setAttribute("sites", sites);
+            request.getRequestDispatcher("cadastraPromocao.jsp").forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(FormPromocaoServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("mensagem", "Problemas ao acessar o banco de dados.");
+            request.getRequestDispatcher("erro.jsp").forward(request, response);
+        }
     }
-
+     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

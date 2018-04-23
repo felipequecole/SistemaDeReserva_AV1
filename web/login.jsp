@@ -14,26 +14,33 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="estilo.css" />
+        <script src="jquery-3.3.1.min.js"></script>
         <title>Sistema de Reservas - Login</title>
     </head>
     <body>
         <jsp:include page="navbar.jsp" />
-        <% if (session.getAttribute("login_mensagem") != null) { %>
-        <p class="errorMessage"> ${sessionScope.login_mensagem}</p>
-        <% }%>
-        <form action="loginServlet" method="post">
-            <label for="username">Username: </label>
-            <input type="text" name="username"/><br/>
-            <label for="username">Senha: </label>
-            <input type="password" name="senha"/><br/>
-            <label for="tipo">Tipo de usuário</label>
-            <select name="tipo">
-                <option value="admin">Administrador</option>
-                <option value="site">Site</option>
-                <option value="hotel">Hotel</option>
-            </select>
-            <button type="submit">Enviar</button>
-        </form>
+        <div class="content">
+            <% if (session.getAttribute("login_mensagem") != null) { %>
+            <div class="error_message">
+                <p class="errorMessage"> ${sessionScope.login_mensagem}</p>
+            </div>
+            <% } %>
+            <h2 align="center"> Identifique-se </h2>
+            <form action="loginServlet" method="post">
+                <label for="username">Username: </label>
+                <input type="text" name="username"/><br/>
+                <label for="username">Senha: </label>
+                <input type="password" name="senha"/><br/>
+                <label for="tipo">Tipo de usuário</label>
+                <select name="tipo">
+                    <option value="admin">Administrador</option>
+                    <option value="site">Site</option>
+                    <option value="hotel">Hotel</option>
+                </select>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+        <jsp:include page="footer.html"/>
     </body>
     <!--Remove da session depois de já exibido (caso precise de reload)-->
     <% session.removeAttribute("login_mensagem");%>

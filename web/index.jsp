@@ -11,43 +11,39 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="estilo.css" />
+        <script src="jquery-3.3.1.min.js"></script>
         <title>Sistema de Reservas</title>
     </head>
     <body>
         <jsp:include page="navbar.jsp" />
+         <div class="content">
         <% if (session.getAttribute("mensagem") != null) { %>
-        <div class="errorMessage">
+        <div class="success_message">
             <ul class="erro">
-                <c:forEach items="${requestScope.mensagens}" var="mensagem">
+                <c:forEach items="${sessionScope.mensagem}" var="mensagem">
                     <li>${mensagem}</li>
-                </c:forEach>
+                    </c:forEach>
             </ul>
         </div>
-        <% }%>
-        <br/>
-        <h1>Sistema de reserva</h1> <br/>
-        
-            <div>
-                <form action="ListaHotelServlet" method="GET">
-                <input type="text" name="cidade" placeholder="Buscar por cidade..."/>
-                <button type="submit">Buscar hotel</button>
-                </form> 
-                <a href="ListaHotelServlet"><button>Ver todos</button></a>
-            </div>
-        
-        <ul>
+        <% }%>       
+            <h1>Sistema de reserva</h1> <br/>
+            <c:if test="${sessionScope.user == null}">
+                <p>Bem-vindo ao sistema de reserva!</p>
+                <p>Para ter acesso a mais funcionalidades do sistema, identifique-se</p>
+            </c:if>
+
             <c:if test="${sessionScope.role == 'admin'}"> 
-            <li><a href="cadastraSite.jsp">Cadastrar site</a></li>
-            <li><a href="hotelForm.jsp">Cadastrar hotel</a></li>
-            </c:if>
-            <li><a href="ListaHotelServlet">Listar hotéis</a></li>
-            <c:if test="${sessionScope.role == 'hotel'}">
-            <li><a href="cadastraPromocao.jsp">Criar promoção</a></li>
-            </c:if>
-            <c:if test="${sessionScope.role == 'hotel' || sessionScope.role == 'site'}">
-            <li><a href="VerPromocoesServlet">Ver minhas promoções</a></li>
-            </c:if>
-        </ul>
+                <a href="cadastraSite.jsp"><button class="home_btn">Cadastrar site</button></a>
+                <a href="hotelForm.jsp"><button class="home_btn">Cadastrar hotel</button></a>
+                </c:if>
+                <c:if test="${sessionScope.role == 'hotel'}">
+                    <a href="FormPromocaoServlet"><button class="home_btn">Criar promoção</button></a>
+                </c:if>
+                <c:if test="${sessionScope.role == 'hotel' || sessionScope.role == 'site'}">
+                    <a href="VerPromocoesServlet"><button class="home_btn">Ver minhas promoções</button></a>
+                </c:if>
+        </div>
+        <jsp:include page="footer.html"/>
     </body>
     <% session.removeAttribute("mensagem");%>
     <% session.removeAttribute("form");%>
