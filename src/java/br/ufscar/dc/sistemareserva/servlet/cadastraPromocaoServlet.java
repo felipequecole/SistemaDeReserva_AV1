@@ -6,7 +6,9 @@
 package br.ufscar.dc.sistemareserva.servlet;
 
 import br.ufscar.dc.sistemareserva.beans.Promocao;
+import br.ufscar.dc.sistemareserva.beans.Site;
 import br.ufscar.dc.sistemareserva.dao.PromocaoDAO;
+import br.ufscar.dc.sistemareserva.dao.SiteDAO;
 import br.ufscar.dc.sistemareserva.forms.CadastraPromocaoFormBean;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -67,7 +69,17 @@ public class cadastraPromocaoServlet extends HttpServlet {
                 if (mensagens != null) {
                     request.setAttribute("mensagem", mensagens);
                     request.getSession().setAttribute("form", cpfb);
-                    request.getRequestDispatcher("cadastraPromocao.jsp").forward(request, response);
+                    SiteDAO sdao = new SiteDAO(datasource);
+                    try {
+                        List<Site> sites = sdao.listarTodosSites();
+                        request.setAttribute("sites", sites);
+                        request.getRequestDispatcher("cadastraPromocao.jsp").forward(request, response);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(cadastraPromocaoServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        request.setAttribute("mensagem", "Problemas ao acessar o banco de dados.");
+                        request.getRequestDispatcher("erro.jsp").forward(request, response);
+                    }
+                    
                 } else {
                     PromocaoDAO pdao = new PromocaoDAO(datasource);
                     Promocao promocao_ret = null;
