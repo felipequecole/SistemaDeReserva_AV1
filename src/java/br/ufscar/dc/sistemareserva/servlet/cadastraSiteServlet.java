@@ -55,7 +55,7 @@ public class cadastraSiteServlet extends HttpServlet {
                 request.setAttribute("mensagens", mensagens);
                 request.getSession().setAttribute("form",csfb);
                 request.getRequestDispatcher("cadastraSite.jsp").forward(request,response);
-            }
+            } else {
             Site site = new Site();
             site.setNome(csfb.getNome());
             site.setUrl(csfb.getUrl());
@@ -64,6 +64,7 @@ public class cadastraSiteServlet extends HttpServlet {
             site = sdao.gravarSite(site);
             request.getSession().setAttribute("mensagem","Site cadastrado.");
             response.sendRedirect("index.jsp");
+            }
         } catch (IllegalAccessException ex) {
             Logger.getLogger(cadastraSiteServlet.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("mensagem", "Erro ao processar requisição.");

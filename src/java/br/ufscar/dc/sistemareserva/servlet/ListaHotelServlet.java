@@ -56,6 +56,8 @@ public class ListaHotelServlet extends HttpServlet {
                 request.setAttribute("query", "nenhuma cidade");
             } catch (SQLException ex) {
                 Logger.getLogger(ListaHotelServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("mensagem", "Erro ao acessar o banco.");
+                request.getRequestDispatcher("erro.jsp").forward(request, response);
             } catch (NamingException ex) {
                 Logger.getLogger(ListaHotelServlet.class.getName()).log(Level.SEVERE, null, ex);
             }

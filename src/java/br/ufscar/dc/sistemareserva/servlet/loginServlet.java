@@ -69,6 +69,8 @@ public class loginServlet extends HttpServlet {
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(loginServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("mensagem", "Erro ao acessar o banco.");
+                request.getRequestDispatcher("erro.jsp").forward(request, response);
             }
 //            System.out.println(site.getNome());
 
@@ -90,6 +92,8 @@ public class loginServlet extends HttpServlet {
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(loginServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("mensagem", "Erro ao acessar o banco.");
+                request.getRequestDispatcher("erro.jsp").forward(request, response);
 
             }
 
@@ -112,6 +116,8 @@ public class loginServlet extends HttpServlet {
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(loginServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("mensagem", "Erro ao acessar o banco.");
+                request.getRequestDispatcher("erro.jsp").forward(request, response);
             }
 
         }
